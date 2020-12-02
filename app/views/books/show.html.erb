@@ -24,7 +24,27 @@
                   <%= @post_book.title %>
                 <% end %>
               </td>
+
               <td><%= @post_book.body %></td>
+
+              <td>
+                <% if @post_book.favorited_by?(current_user) %>
+                  <p>
+                    <%= link_to book_favorites_path(@post_book), method: :delete do %>
+                    ♥<%= @post_book.favorites.count %>
+                    <% end %>
+                  </p>
+                <% else %>
+                  <p>
+                    <%= link_to book_favorites_path(@post_book), method: :post do %>
+                    ♡<%= @post_book.favorites.count %>
+                    <% end %>
+                  </p>
+                <% end %>
+              </td>
+              <td>
+                <p>コメント件数：<%= @post_book.book_comments.count %></p>
+              </td>
                 <% if current_user == @post_book.user %>
               <td>
                 <%= link_to edit_book_path(@post_book.id) do %>
@@ -61,19 +81,7 @@
         <% end %>
 
 
-          <% if @post_book.favorited_by?(current_user) %>
-            <p>
-              <%= link_to book_favorites_path(@post_book), method: :delete do %>
-                ♥<%= @post_book.favorites.count %> いいね
-              <% end %>
-            </p>
-            <% else %>
-            <p>
-              <%= link_to book_favorites_path(@post_book), method: :post do %>
-                ♡<%= @post_book.favorites.count %> いいね
-              <% end %>
-            </p>
-          <% end %>
+
 
         <div class="new-comment">
           <%= form_with(model:[@post_book, @book_comment], local: true) do |f| %>
